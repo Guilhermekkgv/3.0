@@ -249,15 +249,6 @@ function Linux.Create(config)
         ZIndex = 2
     })
 
-    local TitleGradient = Linux.Instance("UIGradient", {
-        Parent = TitleLabel,
-        Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(100, 160, 200)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 150, 200))
-        }),
-        Rotation = 45
-    })
-
     local BetaLabel = Linux.Instance("Frame", {
         Parent = TopBar,
         BackgroundColor3 = Color3.fromRGB(255, 255, 255),
@@ -538,6 +529,15 @@ function Linux.Create(config)
             Position = UDim2.new(0, 5, 0, 0),
             Visible = false,
             ZIndex = 3
+        })
+
+        local TitleGradient = Linux.Instance("UIGradient", {
+            Parent = TitleFrame,
+            Color = ColorSequence.new({
+                ColorSequenceKeypoint.new(0, Color3.fromRGB(100, 160, 200)),
+                ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 150, 200))
+            }),
+            Rotation = 45
         })
 
         local TitleLabel = Linux.Instance("TextLabel", {
