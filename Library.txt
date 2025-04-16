@@ -130,13 +130,11 @@ end
 function Linux.Create(config)
     local randomName = "UI_" .. tostring(math.random(100000, 999999))
 
-    for _, v in pairs(game.CoreGui:GetChildren()) do
+    for _, v in pairs(game:GetService("CoreGui"):GetChildren()) do
         if v:IsA("ScreenGui") and v.Name:match("^UI_%d+$") then
             v:Destroy()
         end
     end
-
-    local ProtectGui = protectgui or (syn and syn.protect_gui) or function() end
 
     local LinuxUI = Linux.Instance("ScreenGui", {
         Name = randomName,
@@ -144,8 +142,6 @@ function Linux.Create(config)
         ResetOnSpawn = false,
         Enabled = true
     })
-
-    ProtectGui(LinuxUI)
 
     local isMobile = InputService.TouchEnabled and not InputService.KeyboardEnabled
     local uiSize = isMobile and (config.SizeMobile or UDim2.fromOffset(300, 500)) or (config.SizePC or UDim2.fromOffset(550, 355))
@@ -197,7 +193,7 @@ function Linux.Create(config)
 
     local BetaLabel = Linux.Instance("Frame", {
         Parent = TopBar,
-        BackgroundColor3 = Color3.fromRGB(22, 22, 22),
+        BackgroundColor3 = Linux.Theme.Element,
         Size = UDim2.new(0, 40, 0, 16),
         Position = UDim2.new(0, TitleLabel.TextBounds.X + 10, 0, 4),
         ZIndex = 2
@@ -265,7 +261,7 @@ function Linux.Create(config)
         BackgroundTransparency = 1,
         Size = UDim2.new(0, 16, 0, 16),
         Position = UDim2.new(0.5, -8, 0.5, -8),
-        Image = "rbxassetid://10734895698",
+        Image = "rbxassetid://7072718366",
         ImageColor3 = Color3.fromRGB(255, 255, 255),
         ZIndex = 3
     })
@@ -285,7 +281,7 @@ function Linux.Create(config)
         BackgroundTransparency = 1,
         Size = UDim2.new(0, 16, 0, 16),
         Position = UDim2.new(0.5, -8, 0.5, -8),
-        Image = "rbxassetid://10747384394",
+        Image = "rbxassetid://7072725342",
         ImageColor3 = Color3.fromRGB(255, 255, 255),
         ZIndex = 3
     })
@@ -346,13 +342,13 @@ function Linux.Create(config)
             TweenService:Create(Main, tweenInfo, {Size = UDim2.new(0, 200, 0, 25), Position = UDim2.new(0.5, -100, 0, 0)}):Play()
             TabsBar.Visible = false
             Content.Visible = false
-            MinimizeIcon.Image = "rbxassetid://10734886735"
+            MinimizeIcon.Image = "rbxassetid://7072706620"
             isMinimized = true
         else
             TweenService:Create(Main, tweenInfo, {Size = originalSize, Position = originalPos}):Play()
             TabsBar.Visible = true
             Content.Visible = true
-            MinimizeIcon.Image = "rbxassetid://10734895698"
+            MinimizeIcon.Image = "rbxassetid://7072718366"
             isMinimized = false
         end
     end)
@@ -413,7 +409,7 @@ function Linux.Create(config)
                 BackgroundTransparency = 1,
                 Size = UDim2.new(0, 16, 0, 16),
                 Position = UDim2.new(0, 10, 0.5, -8),
-                Image = config.Icon.Image or "rbxassetid://10747384394",
+                Image = config.Icon.Image or "rbxassetid://7072725342",
                 ImageColor3 = Color3.fromRGB(100, 100, 100),
                 ZIndex = 2
             })
@@ -579,7 +575,7 @@ function Linux.Create(config)
                 BackgroundTransparency = 1,
                 Size = UDim2.new(0, 14, 0, 14),
                 Position = UDim2.new(1, -20, 0.5, -7),
-                Image = "rbxassetid://10709791437",
+                Image = "rbxassetid://7072719338",
                 ImageColor3 = Linux.Theme.Text,
                 ZIndex = 1
             })
@@ -631,7 +627,7 @@ function Linux.Create(config)
                 Parent = Toggle,
                 Color = ColorSequence.new({
                     ColorSequenceKeypoint.new(0, Color3.fromRGB(70, 130, 180)),
-                    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 105, 180))
+                    ColorSequenceKeypoint.new(1 Grok Response, Color3.fromRGB(255, 105, 180))
                 }),
                 Rotation = 45
             })
@@ -786,14 +782,14 @@ function Linux.Create(config)
                 BackgroundTransparency = 1,
                 Size = UDim2.new(0, 14, 0, 14),
                 Position = UDim2.new(1, -20, 0.5, -7),
-                Image = "rbxassetid://10709767827",
+                Image = "rbxassetid://7072720871",
                 ImageColor3 = Linux.Theme.Text,
                 ZIndex = 2
             })
 
             local DropFrame = Linux.Instance("ScrollingFrame", {
                 Parent = ElementContainer,
-                BackgroundColor3 = Color3.fromRGB(20, 20, 20),
+                BackgroundColor3 = Linux.Theme.Element,
                 BorderColor3 = Color3.fromRGB(50, 50, 50),
                 BorderSizePixel = 1,
                 Size = UDim2.new(1, -5, 0, 0),
@@ -854,7 +850,7 @@ function Linux.Create(config)
                     TweenService:Create(Arrow, tween, {Rotation = 0}):Play()
                 end
                 task.wait(0.2)
-                TabContent.CanvasSize = UDim2.new(0, 0, 0, ElementContainer.AbsoluteSize.Y + ElementContainer:GetChildren()[1].AbsoluteContentSize.Y)
+                TabContent.CanvasSize = UDim2.new(0, 0, 0, ElementContainer.AbsoluteSize.Y + ElementContainer.AbsoluteSize.Y)
             end
 
             local function PopulateOptions()
