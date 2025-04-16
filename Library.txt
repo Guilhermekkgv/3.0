@@ -249,51 +249,55 @@ function Linux.Create(config)
         ZIndex = 2
     })
 
-    local BetaLabel = Linux.Instance("Frame", {
-        Parent = TopBar,
-        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-        BackgroundTransparency = 0,
-        Size = UDim2.new(0, 40, 0, 16),
-        Position = UDim2.new(0, TitleLabel.TextBounds.X + 15, 0, 4),
-        ZIndex = 2
-    })
+    local BetaLabel
+    if config.ShowBetaLabel then
+        BetaLabel = Linux.Instance("Frame", {
+            Parent = TopBar,
+            BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+            BackgroundTransparency = 0,
+            Size = UDim2.new(0, 40, 0, 16),
+            Position = UDim2.new(0, TitleLabel.TextBounds.X + 15, 0, 4),
+            ZIndex = 2
+        })
 
-    local BetaGradient = Linux.Instance("UIGradient", {
-        Parent = BetaLabel,
-        Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(100, 160, 200)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 150, 200))
-        }),
-        Rotation = 45
-    })
+        local BetaGradient = Linux.Instance("UIGradient", {
+            Parent = BetaLabel,
+            Color = ColorSequence.new({
+                ColorSequenceKeypoint.new(0, Color3.fromRGB(100, 160, 200)),
+                ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 150, 200))
+            }),
+            Rotation = 45
+        })
 
-    Linux.Instance("UICorner", {
-        Parent = BetaLabel,
-        CornerRadius = UDim.new(0, 4)
-    })
+        Linux.Instance("UICorner", {
+            Parent = BetaLabel,
+            CornerRadius = UDim.new(0, 4)
+        })
 
-    Linux.Instance("TextLabel", {
-        Parent = BetaLabel,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 1, 0),
-        Font = Enum.Font.SourceSansBold,
-        Text = "BETA",
-        TextColor3 = Color3.fromRGB(255, 255, 255),
-        TextSize = 12,
-        TextXAlignment = Enum.TextXAlignment.Center,
-        ZIndex = 2
-    })
+        Linux.Instance("TextLabel", {
+            Parent = BetaLabel,
+            BackgroundTransparency = 1,
+            Size = UDim2.new(1, 0, 1, 0),
+            Font = Enum.Font.SourceSansBold,
+            Text = "BETA",
+            TextColor3 = Color3.fromRGB(255, 255, 255),
+            TextSize = 12,
+            TextXAlignment = Enum.TextXAlignment.Center,
+            ZIndex = 2
+        })
+    end
 
     local ExecutorLabel
     if config.IdentifyExecutor then
         local executorName = identifyexecutor and identifyexecutor() or "Unknown"
         if executorName ~= "Unknown" then
+            local offset = config.ShowBetaLabel and 60 or 15
             ExecutorLabel = Linux.Instance("Frame", {
                 Parent = TopBar,
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 0,
                 Size = UDim2.new(0, 80, 0, 16),
-                Position = UDim2.new(0, TitleLabel.TextBounds.X + 60, 0, 4),
+                Position = UDim2.new(0, TitleLabel.TextBounds.X + offset, 0, 4),
                 ZIndex = 2
             })
 
@@ -804,12 +808,13 @@ function Linux.Create(config)
 
             UpdateToggle()
 
-            ToggleBox.InputBegan:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1Replaced by: ToggleBox.MouseButton1Click:Connect(function()
+            Toggle.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
                     State = not State
                     UpdateToggle()
                     spawn(function() Linux:SafeCallback(config.Callback, State) end)
-                end)
+                end
+            end)
 
             return Toggle
         end
@@ -865,15 +870,14 @@ function Linux.Create(config)
                 ZIndex = 2
             })
 
-            local Arrow = Linux.Instance("ImageButton", {
+            local Arrow = Linux.Instance("ImageLabel", {
                 Parent = Dropdown,
                 BackgroundTransparency = 1,
                 Size = UDim2.new(0, 14, 0, 14),
                 Position = UDim2.new(1, -20, 0.5, -7),
                 Image = "rbxassetid://10709767827",
                 ImageColor3 = Color3.fromRGB(200, 200, 200),
-                ZIndex = 2,
-                AutoButtonColor = false
+                ZIndex = 2
             })
 
             local DropFrame = Linux.Instance("ScrollingFrame", {
@@ -978,8 +982,6 @@ function Linux.Create(config)
                                     btn.TextColor3 = btn.Text == tostring(opt) and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(200, 200, 200)
                                 end
                             end
-                            IsOpen = false
-                            PopulateOptions()
                             spawn(function() Linux:SafeCallback(config.Callback, opt) end)
                         end)
                     end
@@ -991,11 +993,13 @@ function Linux.Create(config)
                 PopulateOptions()
             end
 
-            Arrow.MouseButton1Click:Connect(function()
-                IsOpen = not IsOpen
-                PopulateOptions()
-                if IsOpen then
-                    elementOrder = elementOrder + 1
+            Dropdown.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    IsOpen = not IsOpen
+                    PopulateOptions()
+                    if IsOpen then
+                        elementOrder = elementOrder + 1
+                    end
                 end
             end)
 
@@ -1239,7 +1243,7 @@ function Linux.Create(config)
 
             local TextBox = Linux.Instance("TextBox", {
                 Parent = Input,
-                BackgroundColor3 = Color3.fromRGB(40, 40, 40),
+                BackgroundColor3 = Color3.fromRGB(30, 30, 30),
                 Size = UDim2.new(0.25, -10, 0, 24),
                 Position = UDim2.new(1, -90, 0.5, -12),
                 Font = Enum.Font.Gotham,
@@ -1259,8 +1263,8 @@ function Linux.Create(config)
             local TextBoxGradient = Linux.Instance("UIGradient", {
                 Parent = TextBox,
                 Color = ColorSequence.new({
-                    ColorSequenceKeypoint.new(0, Color3.fromRGB(100, 160, 200)),
-                    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 150, 200))
+                    ColorSequenceKeypoint.new(0, Color3.fromRGB(80, 130, 160)),
+                    ColorSequenceKeypoint.new(1, Color3.fromRGB(200, 120, 160))
                 }),
                 Rotation = 45
             })
